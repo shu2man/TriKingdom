@@ -3,4 +3,7 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+    <color name="bgc_search">#eff9f8</color>
+    <color name="my_transparent">#00eff9f8</color>
+    <color name="bgc_people_detail">#bda17e</color>
 </resources>

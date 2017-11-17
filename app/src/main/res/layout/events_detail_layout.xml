@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bgi_events">
+
+    <ImageView
+        android:id="@+id/event_img"
+        android:layout_width="150dp"
+        android:layout_height="170dp"
+        android:src="@drawable/kongchengji"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginLeft="20dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        />
+    <TextView
+        android:id="@+id/event_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toRightOf="@id/event_img"
+        app:layout_constraintTop_toTopOf="@id/event_img"
+        app:layout_constraintBottom_toBottomOf="@id/event_img"
+        android:layout_marginLeft="30dp"
+        android:layout_marginStart="30dp"
+        android:text="空城计"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        />
+
+    <ImageView
+        android:id="@+id/people_empire_line"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/empire_line"
+        app:layout_constraintTop_toBottomOf="@+id/event_img"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="50dp"
+        android:layout_marginStart="50dp"
+        android:layout_marginEnd="50dp"
+        android:layout_marginRight="50dp"/>
+    <TextView
+        android:id="@+id/empire_line_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="详  情"
+        app:layout_constraintTop_toBottomOf="@+id/event_img"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginTop="14dp"/>
+
+    <TextView
+        android:id="@+id/event_detail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/event_img"
+        android:text="@string/kongchengji"
+        android:textSize="15sp"
+        android:layout_marginTop="40dp"
+        android:paddingLeft="17dp"
+        android:paddingStart="17dp"
+        android:paddingEnd="17dp"
+        android:paddingRight="17dp"
+        />
+
+
+
+</android.support.constraint.ConstraintLayout>
