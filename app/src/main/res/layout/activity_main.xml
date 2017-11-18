@@ -13,8 +13,9 @@
          android:id="@+id/guide_down"
          android:orientation="horizontal"
          android:layout_width="0dp"
-         android:layout_height="65dp"
+         android:layout_height="wrap_content"
          android:background="@drawable/guide_bg"
+         android:paddingBottom="3dp"
          app:layout_constraintBottom_toBottomOf="parent"
          app:layout_constraintRight_toRightOf="parent"
          app:layout_constraintLeft_toLeftOf="parent">
@@ -27,9 +28,11 @@
               android:orientation="vertical"
               android:gravity="center">
                <ImageButton
+                   android:id="@+id/map_ibtn"
                    android:layout_width="45dp"
                    android:layout_height="45dp"
-                   android:src="@drawable/map_on"/>
+                   android:src="@drawable/map_on"
+                   android:onClick="showMap"/>
                <TextView
                    android:layout_width="wrap_content"
                    android:layout_height="wrap_content"
@@ -46,9 +49,11 @@
               android:orientation="vertical"
               android:gravity="center">
                <ImageButton
+                   android:id="@+id/people_ibtn"
                    android:layout_width="45dp"
                    android:layout_height="45dp"
-                   android:src="@drawable/people_off"/>
+                   android:src="@drawable/people_off"
+                   android:onClick="showPeopleList"/>
                <TextView
                    android:layout_width="wrap_content"
                    android:layout_height="wrap_content"
@@ -65,9 +70,11 @@
               android:orientation="vertical"
               android:gravity="center">
                <ImageButton
+                   android:id="@+id/events_ibtn"
                    android:layout_width="45dp"
                    android:layout_height="45dp"
-                   android:src="@drawable/events_off"/>
+                   android:src="@drawable/events_off"
+                   android:onClick="showEventList"/>
                <TextView
                    android:layout_width="wrap_content"
                    android:layout_height="wrap_content"
@@ -85,6 +92,7 @@
          android:layout_height="0dp"
          android:clickable="true"
          android:focusableInTouchMode="false"
+         android:visibility="visible"
          app:layout_constraintLeft_toLeftOf="parent"
          app:layout_constraintRight_toRightOf="parent"
          app:layout_constraintBottom_toTopOf="@+id/guide_down"
@@ -105,8 +113,9 @@
               android:id="@+id/year_event_tv"
               android:layout_width="0dp"
               android:layout_height="wrap_content"
-              android:text="公元198年，群雄割据"
+              android:text="群雄并起,逐鹿中原"
               android:gravity="center"
+              android:textSize="16sp"
               app:layout_constraintLeft_toLeftOf="parent"
               app:layout_constraintRight_toRightOf="parent"
               app:layout_constraintBottom_toBottomOf="parent"
@@ -114,8 +123,11 @@
           <SeekBar
               android:id="@+id/year_seekbar"
               android:layout_width="0dp"
-              android:layout_height="40dp"
-
+              android:layout_height="25dp"
+              android:layout_marginRight="10dp"
+              android:layout_marginEnd="10dp"
+              android:layout_marginLeft="10dp"
+              android:layout_marginStart="10dp"
               app:layout_constraintLeft_toRightOf="@+id/year_decrease_ibtn"
               app:layout_constraintRight_toLeftOf="@+id/year_incresae_ibtn"
               app:layout_constraintBottom_toTopOf="@+id/year_event_tv"
@@ -131,8 +143,8 @@
               app:layout_constraintTop_toTopOf="@+id/year_seekbar"
               app:layout_constraintBottom_toBottomOf="@+id/year_seekbar"
               app:layout_constraintLeft_toLeftOf="parent"
-              android:layout_marginStart="10dp"
-              android:layout_marginLeft="10dp"/>
+              android:layout_marginStart="18dp"
+              android:layout_marginLeft="18dp"/>
           <ImageButton
               android:id="@+id/year_incresae_ibtn"
               android:layout_width="20dp"
@@ -144,8 +156,8 @@
               app:layout_constraintTop_toTopOf="@+id/year_seekbar"
               app:layout_constraintBottom_toBottomOf="@+id/year_seekbar"
               app:layout_constraintRight_toRightOf="parent"
-              android:layout_marginEnd="10dp"
-              android:layout_marginRight="10dp"
+              android:layout_marginEnd="18dp"
+              android:layout_marginRight="18dp"
               />
 
           <LinearLayout
@@ -177,13 +189,73 @@
                    android:hint="输入 人物/事件 自动搜索"
                    android:cursorVisible="false"
                    android:inputType="text"
+                   android:textSize="14sp"
                    android:layout_marginRight="10dp"
                    android:layout_marginEnd="10dp"
                    android:layout_marginStart="10dp"
                    android:layout_marginLeft="10dp" />
-
           </LinearLayout>
+          <ListView
+              android:id="@+id/search_result"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:visibility="gone"
+              android:background="@color/bgc_search"
+              android:layout_marginTop="2dp"
+              app:layout_constraintLeft_toLeftOf="@+id/search_layout"
+              app:layout_constraintRight_toRightOf="@+id/search_layout"
+              app:layout_constraintTop_toBottomOf="@+id/search_layout"/>
+     </android.support.constraint.ConstraintLayout>
+
+     <android.support.constraint.ConstraintLayout
+         android:id="@+id/container_people"
+         android:layout_width="0dp"
+         android:layout_height="0dp"
+         android:clickable="true"
+         android:visibility="gone"
+         app:layout_constraintLeft_toLeftOf="parent"
+         app:layout_constraintRight_toRightOf="parent"
+         app:layout_constraintBottom_toTopOf="@+id/guide_down"
+         app:layout_constraintTop_toTopOf="parent">
+
+          <GridView
+              android:id="@+id/people_list_gridview"
+              android:layout_width="0dp"
+              android:layout_height="wrap_content"
+              app:layout_constraintBottom_toBottomOf="parent"
+              app:layout_constraintLeft_toLeftOf="parent"
+              app:layout_constraintRight_toRightOf="parent"
+              app:layout_constraintTop_toTopOf="parent"
+              android:numColumns="3"
+              android:verticalSpacing="10dp"
+              android:horizontalSpacing="3dp"/>
 
      </android.support.constraint.ConstraintLayout>
+
+     <android.support.constraint.ConstraintLayout
+         android:id="@+id/container_events"
+         android:layout_width="0dp"
+         android:layout_height="0dp"
+         android:clickable="true"
+         android:visibility="gone"
+         app:layout_constraintLeft_toLeftOf="parent"
+         app:layout_constraintRight_toRightOf="parent"
+         app:layout_constraintBottom_toTopOf="@+id/guide_down"
+         app:layout_constraintTop_toTopOf="parent">
+
+          <GridView
+              android:id="@+id/events_list_gridview"
+              android:layout_width="0dp"
+              android:layout_height="wrap_content"
+              app:layout_constraintBottom_toBottomOf="parent"
+              app:layout_constraintLeft_toLeftOf="parent"
+              app:layout_constraintRight_toRightOf="parent"
+              app:layout_constraintTop_toTopOf="parent"
+              android:numColumns="2"
+              android:verticalSpacing="10dp"
+              android:horizontalSpacing="5dp"/>
+
+     </android.support.constraint.ConstraintLayout>
+
 
 </android.support.constraint.ConstraintLayout>
