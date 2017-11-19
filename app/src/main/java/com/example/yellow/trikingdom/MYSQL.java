@@ -16,7 +16,6 @@ public class MYSQL{
     private SQLiteDatabase db;
     public MYSQL(Context c){
         openSQL(c);
-        createtable();
     }
     public void openSQL(Context c){
         db = SQLiteDatabase.openOrCreateDatabase(c.getFilesDir().toString()+"/mysql.db3",null);
@@ -31,46 +30,102 @@ public class MYSQL{
     }
     public void createtable(){
         try{
-            db.execSQL("create table person(_id integer primary key autoincrement,pname varchar(10),ppic integer,sex varchar(4),szny varchar(40),jg varchar(10),zxsl varchar(10),pdata integer)");
-            db.execSQL("create table news(_id integer primary key autoincrement,nname varchar(20),npic integer,data integer)");
+            db.execSQL("create table person(_id integer primary key autoincrement,name varchar(10),ppic integer,sex varchar(4),szny varchar(40),jg varchar(10),zxsl varchar(10),pdata integer)");
+            db.execSQL("create table news(_id integer primary key autoincrement,name varchar(10),npic integer,data integer)");
+            /*for(int i = 0 ; i< 15;i++)
+                setperson(peoplename[i],peoplepic[i],peoplesex[i],peopleszny[i],peoplejg[i],peoplezxsl[i],peopledata[i]);
+            for(int i = 0 ; i< 15;i++)
+                setnews(newsname[i],newspic[i],newsdata[i]);*/
         }
         catch (SQLiteException e) {}
     }
-    public void setperson(String pname,String ppic,String sex,String szny,String jg,String zxsl,String pdata){
+    public void setperson(String name,String ppic,String sex,String szny,String jg,String zxsl,String pdata){
         try{
-            db.execSQL("insert into person values(?,?,?,?,?,?,?,?)",new String[]{ppic,pname,ppic,sex,szny,jg,zxsl,pdata});
+            deletep(name);
+            db.execSQL("insert into person values(?,?,?,?,?,?,?,?)",new String[]{ppic,name,ppic,sex,szny,jg,zxsl,pdata});
         }
         catch (SQLiteException e) {}
     }
-    public void setnews(String nname,String npic,String data){
+    public void setnews(String name,String npic,String data){
         try{
-            db.execSQL("insert into news values(?,?,?,?)",new String[]{npic,nname,npic,data});
+            deleten(name);
+            db.execSQL("insert into news values(?,?,?,?)",new String[]{npic,name,npic,data});
+        }
+        catch (SQLiteException e) {}
+    }
+    public void deletep(String c)
+    {
+        try{
+            db.execSQL("delete from person where name = ?",new String[]{c});
+        }
+        catch (SQLiteException e) {}
+    }
+    public void deleten(String c)
+    {
+        try{
+            db.execSQL("delete from news where name = ?",new String[]{c});
         }
         catch (SQLiteException e) {}
     }
     public SimpleCursorAdapter getpersonAdapter(Context ct,String name){
-        return new SimpleCursorAdapter(ct,R.layout.people_detail_layout,selectp(name),new String[]{"pname","ppic","sex","szny","jg","zxsl","pdata"},
-                new int[]{R.id.people_name,R.id.people_avatar,R.id.people_sex,R.id.people_year,R.id.people_place,R.id.lead_by_who,R.id.people_introduction});//**
+        return new SimpleCursorAdapter(ct,R.layout.people_detail_layout,selectp(name),new String[]{"name","ppic","sex","szny","jg","zxsl","pdata"},
+                new int[]{R.id.people_name,R.id.people_avatar,R.id.people_sex,R.id.people_year,R.id.people_place,R.id.lead_by_who,R.id.people_introduction});
     }
     public SimpleCursorAdapter getnewsAdapter(Context ct,String name){
-        return new SimpleCursorAdapter(ct,R.layout.events_detail_layout,selectn(name),new String[]{"nname","npic","data"},
+        return new SimpleCursorAdapter(ct,R.layout.events_detail_layout,selectn(name),new String[]{"name","npic","data"},
                 new int[]{R.id.event_name,R.id.event_img,R.id.event_detail});
+    }
+    public SimpleCursorAdapter peoplelistAdapter(Context ct){
+        return new SimpleCursorAdapter(ct,R.layout.item_gridview_people,allp(),new String[]{"name","ppic"},
+                new int[]{R.id.name_people_item,R.id.img_people_item});
+    }
+    public SimpleCursorAdapter newslistAdapter(Context ct){
+        return new SimpleCursorAdapter(ct,R.layout.item_gridview_event,alln(),new String[]{"name","npic"},
+                new int[]{R.id.name_event_item,R.id.img_event_item});
+    }
+    public SimpleCursorAdapter searchAdapter(Context ct,String name){
+        return new SimpleCursorAdapter(ct,R.layout.item_listview_search_result,selectall(name),new String[]{"name"},
+                new int[]{R.id.search_result_name});
+    }
+    public SimpleCursorAdapter Adapterpus(Context ct,String name){
+        Cursor c=selectp(name);
+        Cursor cc=selectn(name);
+        if(c.moveToPosition(0))
+            return new SimpleCursorAdapter(ct,R.layout.people_detail_layout,c,new String[]{"name","ppic","sex","szny","jg","zxsl","pdata"},
+                    new int[]{R.id.people_name,R.id.people_avatar,R.id.people_sex,R.id.people_year,R.id.people_place,R.id.lead_by_who,R.id.people_introduction});
+        else if(cc.moveToPosition(0))
+            return new SimpleCursorAdapter(ct,R.layout.events_detail_layout,cc,new String[]{"name","npic","data"},
+                    new int[]{R.id.event_name,R.id.event_img,R.id.event_detail});
+        else return null;
     }
     public Cursor selectp(String c)
     {
-        return db.rawQuery("select * from person where pname = ?",new String[]{c});
+        return db.rawQuery("select * from person where name = ?",new String[]{c});
     }
     public Cursor selectn(String c)
     {
-        return db.rawQuery("select * from news where nname = ?",new String[]{c});
+        return db.rawQuery("select * from news where name = ?",new String[]{c});
     }
-	/*public Cursor selectall(String c)
-	{
-		return db.rawQuery("(select * from news where nname like _?)",new String[]{c});
-	}*/
+    public Cursor allp()
+    {
+        return db.rawQuery("select * from person",null);
+    }
+    public Cursor alln()
+    {
+        return db.rawQuery("select * from news",null);
+    }
+    public Cursor selectall(String c)
+    {
+        return db.rawQuery("(select * from person where name like '% ? %' and rownum <= 4)union(select * from person where name like '% ? %' and rownum <= 4)union(select * from news where name like '[?]%' and rownum <= 4)union(select * from news where name like '[?]%' and rownum <= 4)",new String[]{c,c,c,c});
+    }
     public void deletetable()
     {
-        db.execSQL("drop table preson");
+        db.execSQL("drop table person");
         db.execSQL("drop table news");
+    }
+    public void recover()
+    {
+        deletetable();
+        createtable();
     }
 }

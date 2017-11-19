@@ -44,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
     private int NumofEvents=55;
     private ListView SearchResultShow;
     private SimpleCursorAdapter mCursorAdapter;
+    private MYSQL sql;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -140,8 +141,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void initDataBase(){
-        MYSQL sql=new MYSQL(this);
-        sql.setperson("曹孟德",Integer.toString(R.drawable.cao_cao),"男","(155~220)","沛国谯县人","魏国统领",getString(R.string.caocao));
+        sql=new MYSQL(this);
+        sql.recover();
+        sql.setperson("曹操",Integer.toString(R.drawable.cao_cao),"男","(155~220)","沛国谯县人","魏国统领",getString(R.string.caocao));
         sql.setnews("空城计",Integer.toString(R.drawable.kongchengji),getString(R.string.kongchengji));
 
         //sql.deletetable();
