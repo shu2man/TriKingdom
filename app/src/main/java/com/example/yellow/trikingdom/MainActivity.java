@@ -1,5 +1,6 @@
 package com.example.yellow.trikingdom;
 
+import java.io.File;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -11,7 +12,9 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.icu.text.DateFormat;
 import android.icu.text.StringPrepParseException;
+import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.BottomNavigationView;
@@ -32,6 +35,7 @@ import android.widget.SeekBar;
 import android.widget.SimpleAdapter;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
     private ListView mListView=null;
@@ -45,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
     private ListView SearchResultShow;
     private SimpleCursorAdapter mCursorAdapter;
     private MYSQL sql;
+    private MediaPlayer mMediaPlayer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,27 +86,14 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         mEditText.addTextChangedListener(new TextWatcher() {
-            private List<String> PE;
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                PE=new ArrayList<String>();
-                DataShare ds=((DataShare)getApplicationContext());
-                PE.addAll(ds.getSearchEvents());
-                PE.addAll(ds.getSearchName());
+
             }
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                /*int index=PE.indexOf(mEditText.getText().toString());
-                if(index!=-1){
-                    SearchResult=PE.get(index);
-                    SearchResultShow.setText(SearchResult);
-                    SearchResultShow.setVisibility(View.VISIBLE);
-                }
-                else SearchResultShow.setVisibility(View.GONE);*/
-                String str=mEditText.getText().toString();
-                for(int i=0;i<str.length();i++){
-
-                }
+                String text=mEditText.getText().toString();
+                SearchResultShow.setAdapter(sql.searchAdapter(MainActivity.this,text));
             }
 
             @Override

@@ -14,6 +14,10 @@ import java.sql.SQLDataException;
 
 public class MYSQL{
     private SQLiteDatabase db;
+    private boolean IsPersonExist=false;
+    private boolean IsNewsExist=false;
+
+
     public MYSQL(Context c){
         openSQL(c);
     }
@@ -30,8 +34,8 @@ public class MYSQL{
     }
     public void createtable(){
         try{
-            db.execSQL("create table person(_id integer primary key autoincrement,name varchar(10),ppic integer,sex varchar(4),szny varchar(40),jg varchar(10),zxsl varchar(10),pdata integer)");
-            db.execSQL("create table news(_id integer primary key autoincrement,name varchar(10),npic integer,data integer)");
+            db.execSQL("create table if not exists person(_id integer primary key autoincrement,name varchar(10),ppic integer,sex varchar(4),szny varchar(40),jg varchar(10),zxsl varchar(10),pdata integer)");
+            db.execSQL("create table if not exists news(_id integer primary key autoincrement,name varchar(10),npic integer,data integer)");
             /*for(int i = 0 ; i< 15;i++)
                 setperson(peoplename[i],peoplepic[i],peoplesex[i],peopleszny[i],peoplejg[i],peoplezxsl[i],peopledata[i]);
             for(int i = 0 ; i< 15;i++)
@@ -116,12 +120,18 @@ public class MYSQL{
     }
     public Cursor selectall(String c)
     {
-        return db.rawQuery("(select * from person where name like '% ? %' and rownum <= 4)union(select * from person where name like '% ? %' and rownum <= 4)union(select * from news where name like '[?]%' and rownum <= 4)union(select * from news where name like '[?]%' and rownum <= 4)",new String[]{c,c,c,c});
+        //return db.rawQuery("(select * from person where name like '% ? %' and rownum <= 4)union(select * from person where name like '% ? %' and rownum <= 4)union(select * from news where name like '[?]%' and rownum <= 4)union(select * from news where name like '[?]%' and rownum <= 4)",new String[]{c,c,c,c});
+        //return db.rawQuery("select * from person where name like '% ? %'",new String[]{c});
+        return db.rawQuery("select * from person where name like '% ? %'",new String[]{c});
     }
     public void deletetable()
     {
-        db.execSQL("drop table person");
-        db.execSQL("drop table news");
+        try{
+            db.execSQL("drop table if exists person");
+            db.execSQL("drop table news");
+        }catch(Exception e){
+
+        }
     }
     public void recover()
     {
