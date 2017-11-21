@@ -27,6 +27,14 @@ public class DataShare extends Application {
     private List<String> SearchEvent;
     private List<String> SearchName;
 
+    private android.graphics.drawable.Drawable DetailImage;
+    private String name;
+    private String year;
+    private String sex;
+    private String place;
+    private String country;
+    private String detail;
+
     public DataShare(){
         Year=new ArrayList<String>();
         Events=new ArrayList<String>();
@@ -72,5 +80,215 @@ public class DataShare extends Application {
     }
     public List<String> getSearchName(){
         return SearchName;
+    }
+
+    public void initDataBase(){
+        MYSQL sql=new MYSQL(this);
+        sql.recover();
+
+        String[] eventname = new String[9];
+        String[] eventpic = new String[9];
+        String[] eventbrf = new String[9];
+
+        eventname[0] = "貂蝉连环计";
+        eventname[1] = "单刀赴会";
+        eventname[2] = "刮骨疗毒";
+        eventname[3] = "空城计";
+        eventname[4] = "七擒孟获";
+        eventname[5] = "三顾茅庐";
+        eventname[6] = "三英战吕布";
+        eventname[7] = "桃园三结义";
+        eventname[8] = "三气周瑜";
+
+        eventpic[0] = Integer.toString(R.drawable.diaochanlianhuanji);
+        eventpic[1] = Integer.toString(R.drawable.dandaofuhui);
+        eventpic[2] = Integer.toString(R.drawable.guaguliaodu);
+        eventpic[3] = Integer.toString(R.drawable.kongchengji);
+        eventpic[4] = Integer.toString(R.drawable.qiqinmenghuo);
+        eventpic[5] = Integer.toString(R.drawable.sangumaolu);
+        eventpic[6] = Integer.toString(R.drawable.sanyingzhanlvbu);
+        eventpic[7] = Integer.toString(R.drawable.taoyuansanjieyi);
+        eventpic[8] = Integer.toString(R.drawable.sanqizhouyu);
+
+        eventbrf[0] = getString(R.string.diaochanlianhuanji);
+        eventbrf[1] = getString(R.string.dandaofuhui);
+        eventbrf[2] = getString(R.string.guaguliaodu);
+        eventbrf[3] = getString(R.string.kongchengji);
+        eventbrf[4] = getString(R.string.qiqinmenghuo);
+        eventbrf[5] = getString(R.string.sangumaolu);
+        eventbrf[6] = getString(R.string.sanyingzhanlvbu);
+        eventbrf[7] = getString(R.string.taoyuansanjieyi);
+        eventbrf[8] = getString(R.string.sanqizhouyu);
+
+        for(int i=0;i<9;i++){
+            sql.setnews(eventname[i],eventpic[i],eventbrf[i]);
+        }
+
+        String[] personname = new String[15];
+        String[] personpic = new String[15];
+        String[] personsex = new String[15];
+        String[] personbirth = new String[15];
+        String[] personhome = new String[15];
+        String[] personfrom = new String[15];
+        String[] personbrf = new String[15];
+
+        personname[0] = "曹操";
+        personname[1] = "貂蝉";
+        personname[2] = "董卓";
+        personname[3] = "关羽";
+        personname[4] = "华佗";
+        personname[5] = "刘备";
+        personname[6] = "鲁肃";
+        personname[7] = "吕布";
+        personname[8] = "孟获";
+        personname[9] = "司马懿";
+        personname[10] = "孙权";
+        personname[11] = "张飞";
+        personname[12] = "赵云";
+        personname[13] = "周瑜";
+        personname[14] = "诸葛亮";
+
+        personpic[0] = Integer.toString(R.drawable.cao_cao);
+        personpic[1] = Integer.toString(R.drawable.diao_chan);
+        personpic[2] = Integer.toString(R.drawable.dong_zhuo);
+        personpic[3] = Integer.toString(R.drawable.guan_yu);
+        personpic[4] = Integer.toString(R.drawable.hua_tuo);
+        personpic[5] = Integer.toString(R.drawable.liu_bei);
+        personpic[6] = Integer.toString(R.drawable.lu_su);
+        personpic[7] = Integer.toString(R.drawable.lv_bu);
+        personpic[8] = Integer.toString(R.drawable.meng_huo);
+        personpic[9] = Integer.toString(R.drawable.sima_yi);
+        personpic[10] = Integer.toString(R.drawable.sun_quan);
+        personpic[11] = Integer.toString(R.drawable.zhang_fei);
+        personpic[12] = Integer.toString(R.drawable.zhao_yun);
+        personpic[13] = Integer.toString(R.drawable.zhou_yu);
+        personpic[14] = Integer.toString(R.drawable.zhuge_liang);
+
+        personsex[0] = "男";
+        personsex[1] = "女";
+        personsex[2] = "男";
+        personsex[3] = "男";
+        personsex[4] = "男";
+        personsex[5] = "男";
+        personsex[6] = "男";
+        personsex[7] = "男";
+        personsex[8] = "男";
+        personsex[9] = "男";
+        personsex[10] = "男";
+        personsex[11] = "男";
+        personsex[12] = "男";
+        personsex[13] = "男";
+        personsex[14] = "男";
+
+        personbirth[0] = "（150-220）";
+        personbirth[1] = "（？-？）";
+        personbirth[2] = "（？-192）";
+        personbirth[3] = "（161-220）";
+        personbirth[4] = "（145-208）";
+        personbirth[5] = "（161-223）";
+        personbirth[6] = "（172-217）";
+        personbirth[7] = "（？-198）";
+        personbirth[8] = "（？-？）";
+        personbirth[9] = "（179-251）";
+        personbirth[10] = "（182-252）";
+        personbirth[11] = "（？-221）";
+        personbirth[12] = "（？-229）";
+        personbirth[13] = "（175-210）";
+        personbirth[14] = "（181-234）";
+
+        personhome[0] = "沛国谯县人";
+        personhome[1] = "关西临洮人";
+        personhome[2] = "陇西临洮人";
+        personhome[3] = "河东解良人";
+        personhome[4] = "沛国谯人";
+        personhome[5] = "幽州涿郡人";
+        personhome[6] = "临淮郡东城县人";
+        personhome[7] = "并州五原郡九原人";
+        personhome[8] = "益州益州郡人";
+        personhome[9] = "司州河内郡人";
+        personhome[10] = "扬州吴郡富春人";
+        personhome[11] = "幽州涿郡人";
+        personhome[12] = "冀州常山国真定人";
+        personhome[13] = "扬州庐江郡舒人";
+        personhome[14] = "徐州琅邪国阳都人";
+
+        personfrom[0] = "所属： 魏国";
+        personfrom[1] = "所属： 群雄";
+        personfrom[2] = "所属： 群雄";
+        personfrom[3] = "所属： 蜀国";
+        personfrom[4] = "所属： 群雄";
+        personfrom[5] = "所属： 蜀国";
+        personfrom[6] = "所属： 吴国";
+        personfrom[7] = "所属： 群雄";
+        personfrom[8] = "所属： 吴国";
+        personfrom[9] = "所属： 魏国";
+        personfrom[10] = "所属： 吴国";
+        personfrom[11] = "所属： 蜀国";
+        personfrom[12] = "所属： 蜀国";
+        personfrom[13] = "所属： 吴国";
+        personfrom[14] = "所属： 蜀国";
+
+        personbrf[0] = getString(R.string.caocao_brf);
+        personbrf[1] = getString(R.string.diaochan_brf);
+        personbrf[2] = getString(R.string.dongzhuo_brf);
+        personbrf[3] = getString(R.string.guanyu_brf);
+        personbrf[4] = getString(R.string.huatuo_brf);
+        personbrf[5] = getString(R.string.liubei_brf);
+        personbrf[6] = getString(R.string.lusu_brf);
+        personbrf[7] = getString(R.string.lvbu_brf);
+        personbrf[8] = getString(R.string.menghuo_brf);
+        personbrf[9] = getString(R.string.simayi_brf);
+        personbrf[10] = getString(R.string.sunquan_brf);
+        personbrf[11] = getString(R.string.zhangfei_brf);
+        personbrf[12] = getString(R.string.zhaoyun_brf);
+        personbrf[13] = getString(R.string.zhouyu_brf);
+        personbrf[14] = getString(R.string.zhugeliang_brf);
+
+        for(int i=0;i<15;i++){
+            sql.setperson(personname[i],personpic[i],personsex[i],personbirth[i],personhome[i],personfrom[i],personbrf[i]);
+        }
+    }
+
+    public void setDetailImage(android.graphics.drawable.Drawable img){
+        DetailImage=img;
+    }
+    public void setDetail(String d){
+        detail=d;
+    }
+    public void setYear(String y){
+        year=y;
+    }
+    public void setCountry(String c){
+        country=c;
+    }
+    public void setPlace(String p){
+        place=p;
+    }
+    public void setName(String n){
+        name=n;
+    }
+    public void setSex(String s){
+        sex=s;
+    }
+    public android.graphics.drawable.Drawable getDetailImage(){
+        return DetailImage;
+    }
+    public String getName(){
+        return name;
+    }
+    public String getYear(){
+        return year;
+    }
+    public String getSex(){
+        return sex;
+    }
+    public String getPlace(){
+        return place;
+    }
+    public String getCountry(){
+        return country;
+    }
+    public String getDetail(){
+        return detail;
     }
 }

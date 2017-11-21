@@ -14,12 +14,9 @@ import java.sql.SQLDataException;
 
 public class MYSQL{
     private SQLiteDatabase db;
-    private boolean IsPersonExist=false;
-    private boolean IsNewsExist=false;
-
-
     public MYSQL(Context c){
         openSQL(c);
+        createtable();
     }
     public void openSQL(Context c){
         db = SQLiteDatabase.openOrCreateDatabase(c.getFilesDir().toString()+"/mysql.db3",null);
@@ -36,6 +33,7 @@ public class MYSQL{
         try{
             db.execSQL("create table if not exists person(_id integer primary key autoincrement,name varchar(10),ppic integer,sex varchar(4),szny varchar(40),jg varchar(10),zxsl varchar(10),pdata integer)");
             db.execSQL("create table if not exists news(_id integer primary key autoincrement,name varchar(10),npic integer,data integer)");
+            db.execSQL("create table if not exists allname(_id integer primary key autoincrement,name varchar(10),pic)");
             /*for(int i = 0 ; i< 15;i++)
                 setperson(peoplename[i],peoplepic[i],peoplesex[i],peopleszny[i],peoplejg[i],peoplezxsl[i],peopledata[i]);
             for(int i = 0 ; i< 15;i++)
@@ -47,6 +45,7 @@ public class MYSQL{
         try{
             deletep(name);
             db.execSQL("insert into person values(?,?,?,?,?,?,?,?)",new String[]{ppic,name,ppic,sex,szny,jg,zxsl,pdata});
+            db.execSQL("insert into allname values(?,?,?)",new String[]{ppic,name,ppic});
         }
         catch (SQLiteException e) {}
     }
@@ -54,6 +53,7 @@ public class MYSQL{
         try{
             deleten(name);
             db.execSQL("insert into news values(?,?,?,?)",new String[]{npic,name,npic,data});
+            db.execSQL("insert into allname values(?,?,?)",new String[]{npic,name,npic});
         }
         catch (SQLiteException e) {}
     }
@@ -61,6 +61,7 @@ public class MYSQL{
     {
         try{
             db.execSQL("delete from person where name = ?",new String[]{c});
+            db.execSQL("delete from allname where name = ?",new String[]{c});
         }
         catch (SQLiteException e) {}
     }
@@ -68,6 +69,7 @@ public class MYSQL{
     {
         try{
             db.execSQL("delete from news where name = ?",new String[]{c});
+            db.execSQL("delete from allname where name = ?",new String[]{c});
         }
         catch (SQLiteException e) {}
     }
@@ -79,7 +81,7 @@ public class MYSQL{
         return new SimpleCursorAdapter(ct,R.layout.events_detail_layout,selectn(name),new String[]{"name","npic","data"},
                 new int[]{R.id.event_name,R.id.event_img,R.id.event_detail});
     }
-    public SimpleCursorAdapter peoplelistAdapter(Context ct){
+    public SimpleCursorAdapter poeplelistAdapter(Context ct){
         return new SimpleCursorAdapter(ct,R.layout.item_gridview_people,allp(),new String[]{"name","ppic"},
                 new int[]{R.id.name_people_item,R.id.img_people_item});
     }
@@ -94,7 +96,7 @@ public class MYSQL{
     public SimpleCursorAdapter Adapterpus(Context ct,String name){
         Cursor c=selectp(name);
         Cursor cc=selectn(name);
-        if(c.moveToPosition(0))
+        if(c.moveToPosition(0))//selectp(name).moveToPosition(0)
             return new SimpleCursorAdapter(ct,R.layout.people_detail_layout,c,new String[]{"name","ppic","sex","szny","jg","zxsl","pdata"},
                     new int[]{R.id.people_name,R.id.people_avatar,R.id.people_sex,R.id.people_year,R.id.people_place,R.id.lead_by_who,R.id.people_introduction});
         else if(cc.moveToPosition(0))
@@ -120,22 +122,22 @@ public class MYSQL{
     }
     public Cursor selectall(String c)
     {
-        //return db.rawQuery("(select * from person where name like '% ? %' and rownum <= 4)union(select * from person where name like '% ? %' and rownum <= 4)union(select * from news where name like '[?]%' and rownum <= 4)union(select * from news where name like '[?]%' and rownum <= 4)",new String[]{c,c,c,c});
-        //return db.rawQuery("select * from person where name like '% ? %'",new String[]{c});
-        return db.rawQuery("select * from person where name like '% ? %'",new String[]{c});
+        //return db.rawQuery("(select * from person where name like ? and rownum <= 4)union(select * from person where name like ? and rownum <= 4)union(select * from news where name like ? and rownum <= 4)union(select * from news where name like ? and rownum <= 4)",new String[]{"%"+c+"%","%"+c+"%","%["+c+"]%","%["+c+"]%"});
+        return db.rawQuery(" select * from allname where name like ?",new String[]{"%"+c+"%"});
     }
     public void deletetable()
     {
         try{
-            db.execSQL("drop table if exists person");
+            db.execSQL("drop table preson");
             db.execSQL("drop table news");
-        }catch(Exception e){
-
+            db.execSQL("drop table allname");
         }
+        catch (SQLiteException e){}
     }
     public void recover()
     {
         deletetable();
         createtable();
     }
+
 }
