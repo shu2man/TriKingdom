@@ -9,7 +9,7 @@
         android:id="@+id/img_event_item"
         android:layout_width="140dp"
         android:layout_height="150dp"
-        android:background="@drawable/bg_circle"
+        android:scaleType="fitXY"
         android:src="@drawable/kongchengji"
         android:layout_marginTop="10dp"/>
     <TextView

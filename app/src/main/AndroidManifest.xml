@@ -21,6 +21,7 @@
         </activity>
         <activity android:name=".PeopleEventsActivity"/>
         <activity android:name=".EditActivity"/>
+        <service android:name=".MyMusicService"/>
     </application>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
 

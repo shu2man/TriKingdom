@@ -34,7 +34,14 @@ public class PeopleEventsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_people_events);
         name=getIntent().getStringExtra("name");
         type=getIntent().getStringExtra("type");
-
+        if(name.equals("添加人物")||name.equals("添加事件"))
+        {
+            Intent intent =new Intent(this,EditActivity.class);
+            intent.putExtra("type",type);
+            intent.putExtra("name",name);
+            startActivity(intent);
+            this.finish();
+        }
         Toast.makeText(this,name,Toast.LENGTH_SHORT).show();
 
         initListView();

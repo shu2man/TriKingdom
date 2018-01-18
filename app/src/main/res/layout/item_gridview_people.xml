@@ -9,7 +9,7 @@
         android:id="@+id/img_people_item"
         android:layout_width="90dp"
         android:layout_height="100dp"
-        android:background="@drawable/bg_circle"
+        android:scaleType="fitXY"
         android:src="@drawable/cao_cao"
         android:layout_marginTop="10dp"/>
     <TextView

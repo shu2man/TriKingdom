@@ -34,6 +34,8 @@ public class MYSQL{
             db.execSQL("create table if not exists person(_id integer primary key autoincrement,name varchar(10),ppic integer,sex varchar(4),szny varchar(40),jg varchar(10),zxsl varchar(10),pdata integer)");
             db.execSQL("create table if not exists news(_id integer primary key autoincrement,name varchar(10),npic integer,data integer)");
             db.execSQL("create table if not exists allname(_id integer primary key autoincrement,name varchar(10),pic)");
+            db.execSQL("insert into person values(?,?,?,?,?,?,?,?)",new String[]{"1","添加人物",Integer.toString(R.drawable.jiahao),null,null,null,null,null});
+            db.execSQL("insert into news values(?,?,?,?)",new String[]{"1","添加事件",Integer.toString(R.drawable.jiahao),null});
             /*for(int i = 0 ; i< 15;i++)
                 setperson(peoplename[i],peoplepic[i],peoplesex[i],peopleszny[i],peoplejg[i],peoplezxsl[i],peopledata[i]);
             for(int i = 0 ; i< 15;i++)
@@ -43,17 +45,73 @@ public class MYSQL{
     }
     public void setperson(String name,String ppic,String sex,String szny,String jg,String zxsl,String pdata){
         try{
+            int temp;
+            Cursor n=selectp(name);
+            Cursor c=selectp("添加人物");
+            if(n.moveToFirst())
+            {
+                temp=n.getInt(0);
+                deletep(name);
+                db.execSQL("insert into person values(?,?,?,?,?,?,?,?)",new String[]{Integer.toString(temp),name,ppic,sex,szny,jg,zxsl,pdata});
+                db.execSQL("insert into allname values(?,?,?)",new String[]{null,name,ppic});
+            }
+            else{
+                c.moveToFirst();
+                temp=c.getInt(0);
+                deletep("添加人物");
+                db.execSQL("insert into person values(?,?,?,?,?,?,?,?)",new String[]{Integer.toString(temp),name,ppic,sex,szny,jg,zxsl,pdata});
+                db.execSQL("insert into allname values(?,?,?)",new String[]{null,name,ppic});
+                db.execSQL("insert into person values(?,?,?,?,?,?,?,?)",new String[]{Integer.toString(temp+1),"添加人物",Integer.toString(R.drawable.jiahao),null,null,null,null,null});
+            }
+
+        }
+        catch (SQLiteException e) {}
+    }
+    public void changeperson(String name,String newname ,String ppic,String sex,String szny,String jg,String zxsl,String pdata){
+        try{
+            int temp;
+            Cursor n=selectp(name);
+            n.moveToFirst();
+            temp=n.getInt(0);
             deletep(name);
-            db.execSQL("insert into person values(?,?,?,?,?,?,?,?)",new String[]{ppic,name,ppic,sex,szny,jg,zxsl,pdata});
-            db.execSQL("insert into allname values(?,?,?)",new String[]{ppic,name,ppic});
+            db.execSQL("insert into person values(?,?,?,?,?,?,?,?)",new String[]{Integer.toString(temp),newname,ppic,sex,szny,jg,zxsl,pdata});
+            db.execSQL("insert into allname values(?,?,?)",new String[]{null,newname,ppic});
         }
         catch (SQLiteException e) {}
     }
     public void setnews(String name,String npic,String data){
         try{
+            int temps;
+            Cursor n=selectn(name);
+            Cursor c=selectn("添加事件");
+            if(n.moveToFirst())
+            {
+                temps=n.getInt(0);
+                deleten(name);
+                db.execSQL("insert into news values(?,?,?,?)",new String[]{Integer.toString(temps),name,npic,data});
+                db.execSQL("insert into allname values(?,?,?)",new String[]{null,name,npic});
+            }
+            else{
+                c.moveToFirst();
+                temps=c.getInt(0);
+                deleten("添加事件");
+                db.execSQL("insert into news values(?,?,?,?)",new String[]{Integer.toString(temps),name,npic,data});
+                db.execSQL("insert into allname values(?,?,?)",new String[]{null,name,npic});
+                db.execSQL("insert into news values(?,?,?,?)",new String[]{Integer.toString(temps+1),"添加事件",Integer.toString(R.drawable.jiahao),null});
+            }
+
+        }
+        catch (SQLiteException e) {}
+    }
+    public void changenews(String name,String newname,String npic,String data){
+        try{
+            int temps;
+            Cursor n=selectn(name);
+            n.moveToFirst();
+            temps=n.getInt(0);
             deleten(name);
-            db.execSQL("insert into news values(?,?,?,?)",new String[]{npic,name,npic,data});
-            db.execSQL("insert into allname values(?,?,?)",new String[]{npic,name,npic});
+            db.execSQL("insert into news values(?,?,?,?)",new String[]{Integer.toString(temps),newname,npic,data});
+            db.execSQL("insert into allname values(?,?,?)",new String[]{null,newname,npic});
         }
         catch (SQLiteException e) {}
     }
@@ -102,6 +160,15 @@ public class MYSQL{
         else if(cc.moveToPosition(0))
             return new SimpleCursorAdapter(ct,R.layout.events_detail_layout,cc,new String[]{"name","npic","data"},
                     new int[]{R.id.event_name,R.id.event_img,R.id.event_detail});
+        else return null;
+    }
+    public String gettype(Context ct,String name){
+        Cursor c=selectp(name);
+        Cursor cc=selectn(name);
+        if(c.moveToPosition(0))//selectp(name).moveToPosition(0)
+            return "people";
+        else if(cc.moveToPosition(0))
+            return "events";
         else return null;
     }
     public Cursor selectp(String c)

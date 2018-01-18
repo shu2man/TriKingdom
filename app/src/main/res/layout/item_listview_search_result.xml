@@ -5,14 +5,14 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:gravity="center_horizontal">
+
     <TextView
         android:id="@+id/search_result_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="搜索结果"
         android:gravity="center"
         android:padding="5dp"
-        android:textSize="14sp"
-        />
+        android:text="搜索结果"
+        android:textSize="14sp" />
 
 </LinearLayout>

@@ -1,6 +1,10 @@
 package com.example.yellow.trikingdom;
 
 import android.app.Application;
+import android.content.ContentResolver;
+import android.database.Cursor;
+import android.net.Uri;
+import android.view.animation.Animation;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,10 +48,10 @@ public class DataShare extends Application {
         String[] name={"刘备","曹操","关羽","张飞","赵云","貂蝉","孙权","周瑜","诸葛亮",
                 "黄忠","吕布","鲁肃","陆逊","马超","甘宁","乐进","徐晃","董卓"};
         String[] year={"","190","191","192","193","194","196","197","198","199","200",
-        "201","202","203","204","205","206","207","208","209","210","211","212","213",
-        "214","215","216","217","218","219-1","219-2","220","221","222","223","225",
-        "226","228","229","230","231","232","233","234","235","236","237","238","239",
-        "241","242","243","244","245","280"};
+                "201","202","203","204","205","206","207","208","209","210","211","212","213",
+                "214","215","216","217","218","219-1","219-2","220","221","222","223","225",
+                "226","228","229","230","231","232","233","234","235","236","237","238","239",
+                "241","242","243","244","245","280"};
         String[] events={"群雄并起，逐鹿中原","讨伐董卓","群雄割据","帝出长安","曹操围徐州","三让徐州","迁都许昌",
                 "袁术称帝","曹操斩吕布","曹袁不和","官渡之战","刘备驻新野","袁家之争","袁家内战",
                 "曹操破邺","幽冀降曹","曹并平州","三顾茅庐","赤壁之战","孙权躲南郡","刘备借荆州",
@@ -87,7 +91,7 @@ public class DataShare extends Application {
         sql.recover();
 
         String[] eventname = new String[9];
-        String[] eventpic = new String[9];
+        int[] eventpic = new int[9];
         String[] eventbrf = new String[9];
 
         eventname[0] = "貂蝉连环计";
@@ -100,15 +104,15 @@ public class DataShare extends Application {
         eventname[7] = "桃园三结义";
         eventname[8] = "三气周瑜";
 
-        eventpic[0] = Integer.toString(R.drawable.diaochanlianhuanji);
-        eventpic[1] = Integer.toString(R.drawable.dandaofuhui);
-        eventpic[2] = Integer.toString(R.drawable.guaguliaodu);
-        eventpic[3] = Integer.toString(R.drawable.kongchengji);
-        eventpic[4] = Integer.toString(R.drawable.qiqinmenghuo);
-        eventpic[5] = Integer.toString(R.drawable.sangumaolu);
-        eventpic[6] = Integer.toString(R.drawable.sanyingzhanlvbu);
-        eventpic[7] = Integer.toString(R.drawable.taoyuansanjieyi);
-        eventpic[8] = Integer.toString(R.drawable.sanqizhouyu);
+        eventpic[0] = R.drawable.diaochanlianhuanji;
+        eventpic[1] = R.drawable.dandaofuhui;
+        eventpic[2] = R.drawable.guaguliaodu;
+        eventpic[3] = R.drawable.kongchengji;
+        eventpic[4] = R.drawable.qiqinmenghuo;
+        eventpic[5] = R.drawable.sangumaolu;
+        eventpic[6] = R.drawable.sanyingzhanlvbu;
+        eventpic[7] = R.drawable.taoyuansanjieyi;
+        eventpic[8] = R.drawable.sanqizhouyu;
 
         eventbrf[0] = getString(R.string.diaochanlianhuanji);
         eventbrf[1] = getString(R.string.dandaofuhui);
@@ -119,13 +123,19 @@ public class DataShare extends Application {
         eventbrf[6] = getString(R.string.sanyingzhanlvbu);
         eventbrf[7] = getString(R.string.taoyuansanjieyi);
         eventbrf[8] = getString(R.string.sanqizhouyu);
-
-        for(int i=0;i<9;i++){
-            sql.setnews(eventname[i],eventpic[i],eventbrf[i]);
-        }
+        Cursor event_Cursor=sql.selectn("添加事件");
+        event_Cursor.moveToFirst();
+        if(event_Cursor.getInt(0)==1)
+            for(int i=0;i<9;i++){
+                Uri uri = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://"
+                        + getResources().getResourcePackageName(eventpic[i]) + "/"
+                        + getResources().getResourceTypeName(eventpic[i]) + "/"
+                        + getResources().getResourceEntryName(eventpic[i]));
+                sql.setnews(eventname[i],uri.toString(),eventbrf[i]);
+            }
 
         String[] personname = new String[15];
-        String[] personpic = new String[15];
+        int[] personpic = new int[15];
         String[] personsex = new String[15];
         String[] personbirth = new String[15];
         String[] personhome = new String[15];
@@ -148,21 +158,21 @@ public class DataShare extends Application {
         personname[13] = "周瑜";
         personname[14] = "诸葛亮";
 
-        personpic[0] = Integer.toString(R.drawable.cao_cao);
-        personpic[1] = Integer.toString(R.drawable.diao_chan);
-        personpic[2] = Integer.toString(R.drawable.dong_zhuo);
-        personpic[3] = Integer.toString(R.drawable.guan_yu);
-        personpic[4] = Integer.toString(R.drawable.hua_tuo);
-        personpic[5] = Integer.toString(R.drawable.liu_bei);
-        personpic[6] = Integer.toString(R.drawable.lu_su);
-        personpic[7] = Integer.toString(R.drawable.lv_bu);
-        personpic[8] = Integer.toString(R.drawable.meng_huo);
-        personpic[9] = Integer.toString(R.drawable.sima_yi);
-        personpic[10] = Integer.toString(R.drawable.sun_quan);
-        personpic[11] = Integer.toString(R.drawable.zhang_fei);
-        personpic[12] = Integer.toString(R.drawable.zhao_yun);
-        personpic[13] = Integer.toString(R.drawable.zhou_yu);
-        personpic[14] = Integer.toString(R.drawable.zhuge_liang);
+        personpic[0] = R.drawable.cao_cao;
+        personpic[1] = R.drawable.diao_chan;
+        personpic[2] = R.drawable.dong_zhuo;
+        personpic[3] = R.drawable.guan_yu;
+        personpic[4] = R.drawable.hua_tuo;
+        personpic[5] = R.drawable.liu_bei;
+        personpic[6] = R.drawable.lu_su;
+        personpic[7] = R.drawable.lv_bu;
+        personpic[8] = R.drawable.meng_huo;
+        personpic[9] = R.drawable.sima_yi;
+        personpic[10] = R.drawable.sun_quan;
+        personpic[11] = R.drawable.zhang_fei;
+        personpic[12] = R.drawable.zhao_yun;
+        personpic[13] = R.drawable.zhou_yu;
+        personpic[14] = R.drawable.zhuge_liang;
 
         personsex[0] = "男";
         personsex[1] = "女";
@@ -243,12 +253,17 @@ public class DataShare extends Application {
         personbrf[12] = getString(R.string.zhaoyun_brf);
         personbrf[13] = getString(R.string.zhouyu_brf);
         personbrf[14] = getString(R.string.zhugeliang_brf);
-
-        for(int i=0;i<15;i++){
-            sql.setperson(personname[i],personpic[i],personsex[i],personbirth[i],personhome[i],personfrom[i],personbrf[i]);
-        }
+        Cursor event_People=sql.selectp("添加人物");
+        event_People.moveToFirst();
+        if(event_People.getInt(0)==1)
+            for(int i=0;i<15;i++){
+                Uri uri = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE + "://"
+                + getResources().getResourcePackageName(personpic[i]) + "/"
+                + getResources().getResourceTypeName(personpic[i]) + "/"
+                + getResources().getResourceEntryName(personpic[i]));
+                sql.setperson(personname[i],uri.toString(),personsex[i],personbirth[i],personhome[i],personfrom[i],personbrf[i]);
+            }
     }
-
     public void setDetailImage(android.graphics.drawable.Drawable img){
         DetailImage=img;
     }

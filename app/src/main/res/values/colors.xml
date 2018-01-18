@@ -8,4 +8,5 @@
     <color name="bgc_people_detail">#bda17e</color>
     <color name="half_transparent_green">#598bf488</color>
     <color name="half_transparent_red">#52f48f88</color>
+    <color name="half_transparent_music">#5ccfa42f</color>
 </resources>
